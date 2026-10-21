@@ -1,4 +1,4 @@
-Hi, I'm Mohd Azfara 👋
+**Hi, I'm Mohd Azfara 👋**
 
 Fintech & Distributed Systems Engineer specializing in fault-tolerant payment orchestration, multi-PSP failover routing, and high-throughput asynchronous workers.
 
