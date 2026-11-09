@@ -23,22 +23,23 @@ I design and maintain mission-critical financial infrastructure where **idempote
 ### 🗺️ End-to-End Financial Ecosystem Architecture
 
 ```text
-                       ┌─────────────────────────────────────────────┐
-                       │              checkout-flow-sdk              │
-                       │  (Client Tokenization, EMV 3DS2 & Failover) │
-                       └──────────────────────┬──────────────────────┘
-                                              │ 1. Emit Signed BigInt Capture Envelope
-                                              ▼
-                       ┌─────────────────────────────────────────────┐
-                       │          double-entry-ledger-core           │
-                       │ (Immutable Zero-Sum Journal & Merkle Chain) │
-                       └──────────┬───────────────────────┬──────────┘
-   2a. Two-Phase Balance Lock     │                       │ 2b. Contra-Entry Reversal Seal
-       & Settlement Journal       ▼                       ▼     & Pro-Rata Split Clawback
-┌──────────────────────────────────────────┐     ┌──────────────────────────────────────────┐
-│          payout-gateway-service          │◄───►│         automated-refund-worker          │
-│ (Multi-Rail Routing & 3-Way Reconciler)  │     │ (Cumulative Cap, Fraud Gate & Refund Saga)│
-└──────────────────────────────────────────┘     └──────────────────────────────────────────┘
+         ┌────────────────────────────────────────────────┐
+         │               checkout-flow-sdk                │
+         │   (Client Tokenization, EMV 3DS2 & Failover)   │
+         └───────────────────────┬────────────────────────┘
+                                 │ 1. Signed BigInt Capture
+                                 ▼
+         ┌────────────────────────────────────────────────┐
+         │           double-entry-ledger-core             │
+         │  (Immutable Zero-Sum Journal & Merkle Chain)   │
+         └───────────┬────────────────────────┬───────────┘
+                     │                        │
+   2a. Two-Phase Lock│                        │2b. Contra-Journal
+       & Settlement  ▼                        ▼    & Split Clawback
+┌─────────────────────────────┐      ┌─────────────────────────────┐
+│   payout-gateway-service    │◄────►│   automated-refund-worker   │
+│ (Multi-Rail & 3-Way Match)  │      │ (Cap Guard & Refund Saga)   │
+└─────────────────────────────┘      └─────────────────────────────┘
 ```
 
 ---
